@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.env
+.env.local
+
+# Astro
+web/.astro/
+web/dist/
+
+# Prisma / SQLite
+server/prisma/dev.db
+server/prisma/dev.db-journal
+server/generated/
+
+# Editors / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json

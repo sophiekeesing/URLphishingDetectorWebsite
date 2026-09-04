@@ -1,0 +1,42 @@
+---
+import AccountLayout from "../../layouts/AccountLayout.astro";
+import { apiFetch, getCurrentUser } from "../../lib/api";
+
+const cookieHeader = Astro.request.headers.get("cookie");
+const user = await getCurrentUser(cookieHeader);
+if (!user) return Astro.redirect("/login");
+
+const subRes = await apiFetch("/api/subscription", cookieHeader);
+const subscription = subRes.ok ? await subRes.json() : { plan: "free", status: "inactive" };
+
+const settingsRes = await apiFetch("/api/settings", cookieHeader);
+const settings = settingsRes.ok ? await settingsRes.json() : null;
+const activeFeatureCount = settings
+  ? Object.values(settings).filter((value) => typeof value === "boolean" && value).length
+  : 0;
+---
+
+<AccountLayout title="Dashboard" user={user}>
+	<h1 class="text-2xl font-extrabold tracking-tight text-slate-900">Welcome back, {user.name || user.email}</h1>
+	<p class="mt-2 text-slate-600">Here's a snapshot of your Chick Check protection.</p>
+
+	<div class="mt-8 grid gap-6 sm:grid-cols-2">
+		<div class="rounded-2xl border border-slate-200 p-6">
+			<p class="text-sm font-medium text-slate-500">Plan</p>
+			<p class="mt-2 text-2xl font-extrabold capitalize text-slate-900">{subscription.plan}</p>
+			<p class="mt-1 text-sm text-slate-500 capitalize">Status: {subscription.status}</p>
+			<a href="/account/subscription" class="mt-4 inline-block text-sm font-semibold text-brand-700 hover:underline">
+				Manage subscription →
+			</a>
+		</div>
+
+		<div class="rounded-2xl border border-slate-200 p-6">
+			<p class="text-sm font-medium text-slate-500">Active protections</p>
+			<p class="mt-2 text-2xl font-extrabold text-slate-900">{activeFeatureCount} / 6</p>
+			<p class="mt-1 text-sm text-slate-500">Features currently switched on</p>
+			<a href="/account/settings" class="mt-4 inline-block text-sm font-semibold text-brand-700 hover:underline">
+				Manage settings →
+			</a>
+		</div>
+	</div>
+</AccountLayout>

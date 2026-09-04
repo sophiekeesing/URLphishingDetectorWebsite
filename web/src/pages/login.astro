@@ -1,0 +1,84 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCurrentUser } from "../lib/api";
+
+const user = await getCurrentUser(Astro.request.headers.get("cookie"));
+if (user) return Astro.redirect("/account");
+---
+
+<Layout title="Log in">
+	<section class="mx-auto max-w-md px-6 py-20">
+		<h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Welcome back</h1>
+		<p class="mt-2 text-slate-600">Log in to manage your Chick Check settings and subscription.</p>
+
+		<form id="login-form" class="mt-8 space-y-4">
+			<div>
+				<label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+				<input
+					id="email"
+					name="email"
+					type="email"
+					required
+					autocomplete="email"
+					class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+				/>
+			</div>
+			<div>
+				<label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+				<input
+					id="password"
+					name="password"
+					type="password"
+					required
+					autocomplete="current-password"
+					class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+				/>
+			</div>
+
+			<p id="form-error" class="hidden text-sm text-red-600"></p>
+
+			<button
+				type="submit"
+				class="w-full rounded-full bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-700 transition-colors"
+			>
+				Log in
+			</button>
+		</form>
+
+		<p class="mt-6 text-sm text-slate-600">
+			Don't have an account? <a href="/register" class="font-semibold text-brand-700 hover:underline">Sign up</a>
+		</p>
+	</section>
+
+	<script>
+		import { API_URL } from "../lib/api";
+
+		const form = document.getElementById("login-form") as HTMLFormElement;
+		const errorEl = document.getElementById("form-error") as HTMLParagraphElement;
+
+		form.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			errorEl.classList.add("hidden");
+
+			const formData = new FormData(form);
+			const res = await fetch(`${API_URL}/api/auth/login`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
+				body: JSON.stringify({
+					email: formData.get("email"),
+					password: formData.get("password"),
+				}),
+			});
+
+			if (!res.ok) {
+				const body = await res.json().catch(() => ({}));
+				errorEl.textContent = body.error ?? "Something went wrong. Please try again.";
+				errorEl.classList.remove("hidden");
+				return;
+			}
+
+			window.location.href = "/account";
+		});
+	</script>
+</Layout>

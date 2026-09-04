@@ -1,0 +1,62 @@
+---
+import Layout from "./Layout.astro";
+import type { CurrentUser } from "../lib/api";
+
+interface Props {
+  title: string;
+  user: CurrentUser;
+}
+
+const { title, user } = Astro.props;
+
+const navItems = [
+  { href: "/account", label: "Dashboard" },
+  { href: "/account/settings", label: "Extension settings" },
+  { href: "/account/subscription", label: "Subscription" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<Layout title={title}>
+	<div class="mx-auto max-w-6xl px-6 py-12 grid gap-10 lg:grid-cols-[220px_1fr]">
+		<aside>
+			<p class="text-sm text-slate-500">Signed in as</p>
+			<p class="font-semibold text-slate-900 truncate">{user.name || user.email}</p>
+
+			<nav class="mt-8 space-y-1">
+				{navItems.map((item) => (
+					<a
+						href={item.href}
+						class={`block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+							currentPath === item.href
+								? "bg-slate-900 text-white"
+								: "text-slate-600 hover:bg-slate-100"
+						}`}
+					>
+						{item.label}
+					</a>
+				))}
+				<button
+					id="logout-button"
+					class="w-full text-left rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+				>
+					Log out
+				</button>
+			</nav>
+		</aside>
+
+		<div>
+			<slot />
+		</div>
+	</div>
+
+	<script>
+		import { API_URL } from "../lib/api";
+
+		document.getElementById("logout-button")?.addEventListener("click", async () => {
+			await fetch(`${API_URL}/api/auth/logout`, { method: "POST", credentials: "include" });
+			window.location.href = "/";
+		});
+	</script>
+</Layout>

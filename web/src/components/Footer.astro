@@ -1,0 +1,22 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate-100 bg-slate-50">
+	<div class="mx-auto max-w-6xl px-6 py-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+		<div class="flex items-center gap-2 font-bold text-slate-800">
+			<span class="text-xl" aria-hidden="true">🐤</span>
+			Chick Check
+		</div>
+
+		<p class="text-sm text-slate-500">
+			© {year} Chick Check. Browser protection against phishing and scam links.
+		</p>
+
+		<div class="flex gap-6 text-sm text-slate-500">
+			<a href="/#features" class="hover:text-slate-800 transition-colors">Features</a>
+			<a href="/#pricing" class="hover:text-slate-800 transition-colors">Pricing</a>
+			<a href="/login" class="hover:text-slate-800 transition-colors">Log in</a>
+		</div>
+	</div>
+</footer>

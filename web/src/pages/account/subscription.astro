@@ -1,0 +1,95 @@
+---
+import AccountLayout from "../../layouts/AccountLayout.astro";
+import { apiFetch, getCurrentUser } from "../../lib/api";
+
+const cookieHeader = Astro.request.headers.get("cookie");
+const user = await getCurrentUser(cookieHeader);
+if (!user) return Astro.redirect("/login");
+
+const subRes = await apiFetch("/api/subscription", cookieHeader);
+const subscription = subRes.ok
+  ? await subRes.json()
+  : { plan: "free", status: "inactive", stripeConfigured: false };
+
+const checkoutResult = Astro.url.searchParams.get("checkout");
+const isPro = subscription.plan === "pro" && subscription.status !== "canceled";
+---
+
+<AccountLayout title="Subscription" user={user}>
+	<h1 class="text-2xl font-extrabold tracking-tight text-slate-900">Subscription</h1>
+	<p class="mt-2 text-slate-600">Manage your Chick Check plan and billing details.</p>
+
+	{checkoutResult === "success" && (
+		<p class="mt-4 rounded-lg bg-safe-500/10 px-4 py-3 text-sm font-medium text-safe-500">
+			Thanks! Your subscription is being activated — this can take a few seconds.
+		</p>
+	)}
+	{checkoutResult === "cancelled" && (
+		<p class="mt-4 rounded-lg bg-slate-100 px-4 py-3 text-sm font-medium text-slate-600">
+			Checkout was cancelled — you have not been charged.
+		</p>
+	)}
+
+	<div class="mt-6 rounded-2xl border border-slate-200 p-6">
+		<p class="text-sm font-medium text-slate-500">Current plan</p>
+		<p class="mt-1 text-2xl font-extrabold capitalize text-slate-900">{subscription.plan}</p>
+		<p class="mt-1 text-sm text-slate-500 capitalize">Status: {subscription.status}</p>
+
+		{!subscription.stripeConfigured && (
+			<p class="mt-4 rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-700">
+				Billing isn't configured on this server yet. Set the Stripe test-mode keys in the API's
+				<code class="mx-1 rounded bg-amber-100 px-1">.env</code> to enable upgrades.
+			</p>
+		)}
+
+		<div class="mt-6 flex flex-wrap gap-3">
+			{!isPro && (
+				<button
+					id="checkout-button"
+					disabled={!subscription.stripeConfigured}
+					class="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-700 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+				>
+					Upgrade to Pro
+				</button>
+			)}
+			{subscription.stripeCustomerId && (
+				<button
+					id="portal-button"
+					class="rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-800 hover:border-slate-400 transition-colors"
+				>
+					Manage billing
+				</button>
+			)}
+		</div>
+
+		<p id="subscription-error" class="mt-4 hidden text-sm text-red-600"></p>
+	</div>
+
+	<script>
+		import { API_URL } from "../../lib/api";
+
+		const errorEl = document.getElementById("subscription-error") as HTMLParagraphElement;
+
+		async function startRedirectFlow(path: string) {
+			errorEl.classList.add("hidden");
+			const res = await fetch(`${API_URL}${path}`, { method: "POST", credentials: "include" });
+			const body = await res.json().catch(() => ({}));
+
+			if (!res.ok || !body.url) {
+				errorEl.textContent = body.error ?? "Something went wrong. Please try again.";
+				errorEl.classList.remove("hidden");
+				return;
+			}
+
+			window.location.href = body.url;
+		}
+
+		document.getElementById("checkout-button")?.addEventListener("click", () => {
+			startRedirectFlow("/api/subscription/checkout");
+		});
+
+		document.getElementById("portal-button")?.addEventListener("click", () => {
+			startRedirectFlow("/api/subscription/portal");
+		});
+	</script>
+</AccountLayout>

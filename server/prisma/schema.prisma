@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+
+  settings     FeatureSettings?
+  subscription Subscription?
+}
+
+// One row of toggles per user for the Chick Check browser extension.
+model FeatureSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  linkScanning       Boolean @default(true)
+  formProtection     Boolean @default(true)
+  typosquatWarnings  Boolean @default(true)
+  downloadScanning   Boolean @default(true)
+  communityReports   Boolean @default(false)
+  weeklyEmailSummary Boolean @default(false)
+
+  updatedAt DateTime @updatedAt
+}
+
+model Subscription {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  plan                 String   @default("free") // "free" | "pro"
+  status               String   @default("inactive") // Stripe subscription status
+  stripeCustomerId     String?  @unique
+  stripeSubscriptionId String?  @unique
+  currentPeriodEnd     DateTime?
+
+  updatedAt DateTime @updatedAt
+}
