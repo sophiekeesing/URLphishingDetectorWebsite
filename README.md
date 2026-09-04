@@ -17,17 +17,18 @@ enabled.
 ## Getting started
 
 ```bash
-npm install
-
-# server/.env — copy from server/.env.example and fill in JWT_SECRET (and
-# Stripe test keys if you want billing to work)
-cp server/.env.example server/.env
-cp web/.env.example web/.env
-
-npm run prisma:migrate -w server   # creates the local SQLite database
-npm run dev:server                 # http://localhost:4000
-npm run dev:web                    # http://localhost:4321
+make dev
 ```
+
+This creates `server/.env` and `web/.env` from their `.env.example` files
+(generating a random `JWT_SECRET`), installs dependencies, runs the Prisma
+migration to create the local SQLite database, and starts both services:
+
+- API — http://localhost:4000
+- Website — http://localhost:4321
+
+`Ctrl+C` stops both. Add Stripe test keys to `server/.env` any time to enable
+billing (see below) — no need to redo setup.
 
 ### Stripe (optional, test mode)
 
