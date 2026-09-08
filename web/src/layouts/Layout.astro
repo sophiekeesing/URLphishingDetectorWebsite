@@ -8,7 +8,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Chick Check catches phishing and scam links before you click them." } = Astro.props;
+const { title, description = "Chick-Check catches phishing and scam links before you click them." } = Astro.props;
 ---
 
 <!doctype html>
@@ -18,7 +18,7 @@ const { title, description = "Chick Check catches phishing and scam links before
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{title} · Chick Check</title>
+		<title>{title} · Chick-Check</title>
 	</head>
 	<body class="min-h-screen bg-white text-slate-900 antialiased flex flex-col">
 		<Header />
@@ -26,5 +26,107 @@ const { title, description = "Chick Check catches phishing and scam links before
 			<slot />
 		</main>
 		<Footer />
+
+		<script>
+			const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			const parallaxEls = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
+
+			if (!reduceMotion && parallaxEls.length > 0) {
+				let ticking = false;
+
+				const updateParallax = () => {
+					const viewportCenter = window.innerHeight / 2;
+					for (const el of parallaxEls) {
+						const speed = parseFloat(el.dataset.parallax ?? "0.2");
+						const rect = el.getBoundingClientRect();
+						const elementCenter = rect.top + rect.height / 2;
+						const offset = (viewportCenter - elementCenter) * speed;
+						el.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
+					}
+					ticking = false;
+				};
+
+				const onScroll = () => {
+					if (!ticking) {
+						requestAnimationFrame(updateParallax);
+						ticking = true;
+					}
+				};
+
+				window.addEventListener("scroll", onScroll, { passive: true });
+				window.addEventListener("resize", onScroll);
+				updateParallax();
+			}
+		</script>
+
+		<script>
+			const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+			const revealEls = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+
+			if (!reduceMotion && revealEls.length > 0) {
+				const splitIntoLines = (el: HTMLElement) => {
+					const words = (el.textContent ?? "").trim().split(/\s+/);
+					el.textContent = "";
+
+					const wordSpans = words.map((word, i) => {
+						const span = document.createElement("span");
+						span.textContent = word + (i < words.length - 1 ? " " : "");
+						span.style.display = "inline-block";
+						el.appendChild(span);
+						return span;
+					});
+
+					requestAnimationFrame(() => {
+						const lineMap = new Map<number, HTMLSpanElement[]>();
+						for (const span of wordSpans) {
+							const top = span.offsetTop;
+							if (!lineMap.has(top)) lineMap.set(top, []);
+							lineMap.get(top)!.push(span);
+						}
+
+						el.textContent = "";
+						let lineIndex = 0;
+						for (const lineWords of lineMap.values()) {
+							const lineOuter = document.createElement("span");
+							lineOuter.style.display = "block";
+							lineOuter.style.overflow = "hidden";
+
+							const lineInner = document.createElement("span");
+							lineInner.style.display = "block";
+							lineInner.style.transform = "translateY(110%)";
+							lineInner.style.opacity = "0";
+							lineInner.style.transition = `transform 0.9s cubic-bezier(0.22,1,0.36,1) ${lineIndex * 0.09}s, opacity 0.9s ease-out ${lineIndex * 0.09}s`;
+							lineInner.dataset.revealLine = "true";
+
+							for (const wordSpan of lineWords) {
+								lineInner.appendChild(wordSpan);
+							}
+
+							lineOuter.appendChild(lineInner);
+							el.appendChild(lineOuter);
+							lineIndex += 1;
+						}
+
+						const observer = new IntersectionObserver(
+							(entries) => {
+								for (const entry of entries) {
+									if (entry.isIntersecting) {
+										el.querySelectorAll<HTMLElement>("[data-reveal-line]").forEach((line) => {
+											line.style.transform = "translateY(0)";
+											line.style.opacity = "1";
+										});
+										observer.unobserve(el);
+									}
+								}
+							},
+							{ threshold: 0.2 },
+						);
+						observer.observe(el);
+					});
+				};
+
+				revealEls.forEach(splitIntoLines);
+			}
+		</script>
 	</body>
 </html>

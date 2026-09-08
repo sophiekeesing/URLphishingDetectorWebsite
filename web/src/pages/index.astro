@@ -1,32 +1,29 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { features, plans } from "../lib/content";
+import { features } from "../lib/content";
 ---
 
 <Layout title="Catch phishing links before you click">
 	<!-- Hero -->
 	<section class="mx-auto max-w-6xl px-6 pt-20 pb-24 grid gap-12 lg:grid-cols-2 lg:items-center">
 		<div>
-			<span class="inline-flex items-center gap-2 rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700">
-				🐤 Free browser extension
-			</span>
-			<h1 class="mt-6 text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+			<h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900" data-reveal>
 				Catch scam links before they catch you.
 			</h1>
-			<p class="mt-6 text-lg text-slate-600">
-				Chick Check watches the links, forms, and downloads on the pages you visit and warns you the moment
+			<p class="mt-6 text-lg text-slate-600" data-reveal>
+				Chick-Check watches the links, forms, and downloads on the pages you visit and warns you the moment
 				something looks like phishing — before you click, type, or download anything.
 			</p>
 			<div id="download" class="mt-8 flex flex-wrap gap-4">
 				<a
 					href="#"
-					class="rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-700 transition-colors"
+					class="rounded-full bg-[#44B695] px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white hover:bg-[#369278] transition-colors"
 				>
 					Add to Chrome — it's free
 				</a>
 				<a
 					href="#"
-					class="rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400 transition-colors"
+					class="rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-slate-800 hover:border-slate-400 transition-colors"
 				>
 					Add to Firefox
 				</a>
@@ -34,7 +31,7 @@ import { features, plans } from "../lib/content";
 			<p class="mt-3 text-xs text-slate-400">Free forever plan. No credit card required.</p>
 		</div>
 
-		<div class="relative">
+		<div class="relative" data-parallax="0.08">
 			<div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/60">
 				<div class="flex items-center gap-2 text-xs text-slate-400">
 					<span class="h-2.5 w-2.5 rounded-full bg-red-400"></span>
@@ -44,7 +41,7 @@ import { features, plans } from "../lib/content";
 				</div>
 				<div class="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
 					<p class="flex items-center gap-2 font-semibold text-red-700">
-						<span aria-hidden="true">⚠️</span> Chick Check blocked this page
+						<span aria-hidden="true">⚠️</span> Chick-Check blocked this page
 					</p>
 					<p class="mt-2 text-sm text-red-600">
 						This site's domain closely mimics <strong>paypal.com</strong> and was reported as a phishing
@@ -61,92 +58,196 @@ import { features, plans } from "../lib/content";
 
 	<!-- Features -->
 	<section id="features" class="bg-slate-50 py-24">
-		<div class="mx-auto max-w-6xl px-6">
-			<div class="max-w-2xl">
-				<h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Everything watching your back</h2>
-				<p class="mt-4 text-slate-600">
-					Every feature below can be switched on or off from your account settings once you're signed in —
-					Chick Check adapts to how you browse.
-				</p>
-			</div>
-
-			<div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{features.map((feature) => (
-					<div class="rounded-2xl border border-slate-200 bg-white p-6">
-						<span class="text-2xl" aria-hidden="true">{feature.icon}</span>
-						<h3 class="mt-4 font-semibold text-slate-900">{feature.title}</h3>
-						<p class="mt-2 text-sm text-slate-600">{feature.description}</p>
+		<div class="mx-auto grid max-w-6xl gap-6 px-6 sm:grid-cols-4">
+			{features.map((feature, index) => {
+				const tilePositions = [
+					"sm:col-start-1 sm:row-start-1",
+					"sm:col-start-2 sm:row-start-1",
+					"sm:col-start-3 sm:row-start-1",
+					"sm:col-start-1 sm:row-start-2",
+					"sm:col-start-2 sm:row-start-2",
+					"sm:col-start-1 sm:row-start-3",
+				];
+				return (
+					<div class:list={["h-48 [perspective:1000px]", tilePositions[index]]}>
+						<div class="group relative h-full w-full cursor-pointer select-none [transform-style:preserve-3d] transition-transform duration-300 ease-out hover:delay-150 hover:[transform:rotateY(180deg)]">
+							<div class="absolute inset-0 flex items-center justify-center rounded-2xl border border-slate-200 bg-white p-6 text-center [backface-visibility:hidden]">
+								<h3 class="font-semibold text-slate-900">{feature.title}</h3>
+								<svg viewBox="0 0 32 32" class="absolute bottom-2 right-2 h-6 w-6" aria-hidden="true">
+									<path d="M28 28 L12 28 L28 12 Z" fill="none" stroke="#44B695" stroke-width="1.5" stroke-linejoin="round" />
+								</svg>
+							</div>
+							<div class="absolute inset-0 flex items-center justify-center rounded-2xl border border-[#44B695] bg-[#44B695]/15 p-6 text-center [backface-visibility:hidden] [transform:rotateY(180deg)]">
+								<p class="text-sm font-medium text-slate-900">{feature.description}</p>
+							</div>
+						</div>
 					</div>
-				))}
+				);
+			})}
+
+			<div class="flex flex-col justify-center text-right sm:col-start-3 sm:col-span-2 sm:row-start-2 sm:row-span-2">
+				<h2 class="text-3xl font-extrabold tracking-tight text-slate-900" data-reveal>Everything watching your back</h2>
+				<p class="mt-4 text-slate-600" data-reveal>
+					Every feature can be switched on or off from your account settings once you're signed in —
+					Chick-Check adapts to how you browse.
+				</p>
 			</div>
 		</div>
 	</section>
 
 	<!-- How it works -->
-	<section class="py-24">
+	<section id="how-it-works" class="py-24">
 		<div class="mx-auto max-w-6xl px-6">
-			<h2 class="text-3xl font-extrabold tracking-tight text-slate-900">How it works</h2>
-			<div class="mt-12 grid gap-10 sm:grid-cols-3">
-				<div>
-					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-700">1</div>
-					<h3 class="mt-4 font-semibold text-slate-900">Install the extension</h3>
-					<p class="mt-2 text-sm text-slate-600">Add Chick Check to Chrome or Firefox in a few seconds — no account required to start.</p>
+			<h2 class="text-center text-3xl font-extrabold tracking-tight text-slate-900" data-reveal>How it works</h2>
+
+			<div class="mt-12 grid overflow-hidden rounded-3xl border border-slate-200 md:grid-cols-5">
+				<div class="flex min-h-[320px] items-center justify-center bg-slate-200 text-slate-500 md:col-span-3 md:min-h-[420px]">
+					picture carousel
 				</div>
-				<div>
-					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-700">2</div>
-					<h3 class="mt-4 font-semibold text-slate-900">Browse as usual</h3>
-					<p class="mt-2 text-sm text-slate-600">Chick Check quietly checks links, login forms, and downloads in the background.</p>
+
+				<div class="flex flex-col justify-center bg-slate-50 p-8 md:col-span-2 md:p-10">
+					<h3 id="howto-title" class="text-2xl font-bold text-slate-900"></h3>
+					<p id="howto-body" class="mt-4 text-slate-600"></p>
 				</div>
-				<div>
-					<div class="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 font-bold text-brand-700">3</div>
-					<h3 class="mt-4 font-semibold text-slate-900">Get warned in time</h3>
-					<p class="mt-2 text-sm text-slate-600">A clear warning pops up before you land on, or interact with, a suspicious page.</p>
+			</div>
+
+			<div class="mt-6 flex items-center justify-center gap-6">
+				<button
+					id="howto-prev"
+					type="button"
+					aria-label="Previous step"
+					class="cursor-pointer transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:opacity-30"
+				>
+					<img src="/arrow-right.svg" alt="" class="h-8 w-8 rotate-180" aria-hidden="true" />
+				</button>
+				<div id="howto-dots" class="flex items-center gap-2"></div>
+				<button
+					id="howto-next"
+					type="button"
+					aria-label="Next step"
+					class="cursor-pointer transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:opacity-30"
+				>
+					<img src="/arrow-right.svg" alt="" class="h-8 w-8" aria-hidden="true" />
+				</button>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		const steps = [
+			{
+				title: "Install the extension",
+				body: "Add Chick-Check to Chrome or Firefox in a few seconds — no account required to start.",
+			},
+			{
+				title: "Browse as usual",
+				body: "Chick-Check quietly checks links, login forms, and downloads in the background.",
+			},
+			{
+				title: "Get warned in time",
+				body: "A clear warning pops up before you land on, or interact with, a suspicious page.",
+			},
+		];
+
+		const titleEl = document.getElementById("howto-title") as HTMLHeadingElement;
+		const bodyEl = document.getElementById("howto-body") as HTMLParagraphElement;
+		const dotsEl = document.getElementById("howto-dots") as HTMLDivElement;
+		const prevBtn = document.getElementById("howto-prev") as HTMLButtonElement;
+		const nextBtn = document.getElementById("howto-next") as HTMLButtonElement;
+
+		let current = 0;
+
+		function render() {
+			const step = steps[current];
+			titleEl.textContent = step.title;
+			bodyEl.textContent = step.body;
+			prevBtn.disabled = current === 0;
+			nextBtn.disabled = current === steps.length - 1;
+
+			dotsEl.querySelectorAll("button").forEach((dot, index) => {
+				const isActive = index === current;
+				dot.className = isActive
+					? "h-2 w-8 cursor-pointer rounded-full bg-slate-900 transition-all"
+					: "h-2 w-2 cursor-pointer rounded-full bg-slate-300 transition-all hover:bg-slate-400";
+			});
+		}
+
+		steps.forEach((_, index) => {
+			const dot = document.createElement("button");
+			dot.type = "button";
+			dot.setAttribute("aria-label", `Go to step ${index + 1}`);
+			dot.addEventListener("click", () => {
+				current = index;
+				render();
+			});
+			dotsEl.appendChild(dot);
+		});
+
+		prevBtn.addEventListener("click", () => {
+			if (current > 0) {
+				current -= 1;
+				render();
+			}
+		});
+
+		nextBtn.addEventListener("click", () => {
+			if (current < steps.length - 1) {
+				current += 1;
+				render();
+			}
+		});
+
+		render();
+	</script>
+
+	<!-- About us -->
+	<section id="about" class="bg-slate-50 py-24">
+		<div class="mx-auto max-w-6xl px-6">
+			<h2 class="text-3xl font-extrabold tracking-tight text-slate-900" data-reveal>About us</h2>
+			<p class="mt-6 max-w-3xl text-slate-600" data-reveal>
+				Chick-Check is a browser extension built to catch phishing and scam links before they catch you.
+				We watch the links, forms, and downloads on the pages you visit and warn you the moment something
+				looks suspicious — before you click, type, or download anything.
+			</p>
+			<p class="mt-4 max-w-3xl text-slate-600" data-reveal>
+				We built Chick-Check because scam sites keep getting harder to spot at a glance. Our goal is to give
+				everyday browsers a quiet, reliable safety net that stays out of the way until it's needed.
+			</p>
+			<p class="mt-6 max-w-3xl border-l-4 border-[#44B695] pl-4 text-lg font-medium italic text-slate-800" data-reveal>
+				Everyone should have access to resources, and everyone should have safe access. Digital safety isn't a
+				premium feature reserved for those who can pay or already know how to protect themselves — it's a
+				baseline everyone is entitled to.
+			</p>
+
+			<h3 class="mt-16 text-xl font-bold tracking-tight text-slate-900" data-reveal>Our values</h3>
+			<div class="mt-6 grid gap-6 sm:grid-cols-2">
+				<div class="rounded-2xl border border-slate-200 bg-white p-6">
+					<h4 class="font-semibold text-slate-900">Safety is a right</h4>
+					<p class="mt-2 text-sm text-slate-600">
+						Not a feature reserved for people who can pay or who already know how to protect themselves.
+					</p>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-white p-6">
+					<h4 class="font-semibold text-slate-900">Privacy by default</h4>
+					<p class="mt-2 text-sm text-slate-600">
+						Checks run locally on your device wherever possible. We see as little as possible, and we tell
+						you exactly what and why.
+					</p>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-white p-6">
+					<h4 class="font-semibold text-slate-900">Honesty over hype</h4>
+					<p class="mt-2 text-sm text-slate-600">
+						No absolute promises — just tools that genuinely help, explained in plain language, not jargon.
+					</p>
+				</div>
+				<div class="rounded-2xl border border-slate-200 bg-white p-6">
+					<h4 class="font-semibold text-slate-900">Free, permanently</h4>
+					<p class="mt-2 text-sm text-slate-600">
+						Funded by digital-commons grants, not by selling your data or upselling a "premium" tier.
+					</p>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- Pricing -->
-	<section id="pricing" class="bg-slate-50 py-24">
-		<div class="mx-auto max-w-6xl px-6">
-			<div class="max-w-2xl">
-				<h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Simple pricing</h2>
-				<p class="mt-4 text-slate-600">Start free. Upgrade any time from your account for the full feature set.</p>
-			</div>
-
-			<div class="mt-12 grid gap-6 sm:grid-cols-2 max-w-3xl">
-				{plans.map((plan) => (
-					<div class={`rounded-2xl border p-8 ${plan.id === "pro" ? "border-brand-400 bg-white shadow-lg" : "border-slate-200 bg-white"}`}>
-						<h3 class="font-semibold text-slate-900">{plan.name}</h3>
-						<p class="mt-4 flex items-baseline gap-1">
-							<span class="text-3xl font-extrabold text-slate-900">{plan.price}</span>
-							<span class="text-sm text-slate-500">{plan.cadence}</span>
-						</p>
-						<p class="mt-2 text-sm text-slate-600">{plan.description}</p>
-						<ul class="mt-6 space-y-2 text-sm text-slate-700">
-							{plan.featureKeys.map((key) => {
-								const feature = features.find((f) => f.key === key);
-								return feature ? (
-									<li class="flex items-start gap-2">
-										<span class="text-safe-500" aria-hidden="true">✓</span>
-										{feature.title}
-									</li>
-								) : null;
-							})}
-						</ul>
-						<a
-							href="/register"
-							class={`mt-8 block rounded-full px-4 py-2.5 text-center text-sm font-semibold transition-colors ${
-								plan.id === "pro"
-									? "bg-slate-900 text-white hover:bg-slate-700"
-									: "border border-slate-300 text-slate-800 hover:border-slate-400"
-							}`}
-						>
-							{plan.cta}
-						</a>
-					</div>
-				))}
-			</div>
-		</div>
-	</section>
 </Layout>

@@ -1,22 +1,35 @@
 ---
 const year = new Date().getFullYear();
+
+const navLinks = [
+  { href: "/#features", label: "Features" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#about", label: "About us" },
+  { href: "/#download", label: "Download" },
+  { href: "/contribute", label: "Contribute" },
+  { href: "/contact", label: "Contact us" },
+  { href: "/login", label: "Log in" },
+];
 ---
 
-<footer class="border-t border-slate-100 bg-slate-50">
-	<div class="mx-auto max-w-6xl px-6 py-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-		<div class="flex items-center gap-2 font-bold text-slate-800">
-			<img src="/logo-mark.svg" alt="" class="h-6 w-5" aria-hidden="true" />
-			Chick Check
-		</div>
+<footer class="bg-[#369278]">
+	<div class="mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 py-10">
+		<a href="/" class="flex items-center">
+			<img src="/logo-white.svg" alt="Chick-Check" class="h-14 w-auto" />
+		</a>
 
-		<p class="text-sm text-slate-500">
-			© {year} Chick Check. Browser protection against phishing and scam links.
-		</p>
+		<nav class="grid grid-flow-col grid-rows-4 gap-x-16 gap-y-2 text-sm text-white/80">
+			{navLinks.map((link) => (
+				<a href={link.href} class="hover:text-white transition-colors">{link.label}</a>
+			))}
+		</nav>
 
-		<div class="flex gap-6 text-sm text-slate-500">
-			<a href="/#features" class="hover:text-slate-800 transition-colors">Features</a>
-			<a href="/#pricing" class="hover:text-slate-800 transition-colors">Pricing</a>
-			<a href="/login" class="hover:text-slate-800 transition-colors">Log in</a>
+		<div class="flex w-full flex-col items-center gap-3 border-t border-white/20 pt-6 text-sm text-white/80 sm:flex-row sm:justify-between">
+			<p>© {year} Chick-Check. Browser protection against phishing and scam links.</p>
+			<div class="flex gap-6">
+				<a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+				<a href="/impressum" class="hover:text-white transition-colors">Impressum</a>
+			</div>
 		</div>
 	</div>
 </footer>

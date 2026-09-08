@@ -17,7 +17,7 @@ const isPro = subscription.plan === "pro" && subscription.status !== "canceled";
 
 <AccountLayout title="Subscription" user={user}>
 	<h1 class="text-2xl font-extrabold tracking-tight text-slate-900">Subscription</h1>
-	<p class="mt-2 text-slate-600">Manage your Chick Check plan and billing details.</p>
+	<p class="mt-2 text-slate-600">Manage your Chick-Check plan and billing details.</p>
 
 	{checkoutResult === "success" && (
 		<p class="mt-4 rounded-lg bg-safe-500/10 px-4 py-3 text-sm font-medium text-safe-500">
@@ -47,7 +47,7 @@ const isPro = subscription.plan === "pro" && subscription.status !== "canceled";
 				<button
 					id="checkout-button"
 					disabled={!subscription.stripeConfigured}
-					class="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-700 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+					class="rounded-full bg-[#44B695] px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-white hover:bg-[#369278] transition-colors disabled:cursor-not-allowed disabled:opacity-40"
 				>
 					Upgrade to Pro
 				</button>
@@ -55,7 +55,7 @@ const isPro = subscription.plan === "pro" && subscription.status !== "canceled";
 			{subscription.stripeCustomerId && (
 				<button
 					id="portal-button"
-					class="rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-800 hover:border-slate-400 transition-colors"
+					class="rounded-full border border-slate-300 px-5 py-2.5 text-sm font-semibold uppercase tracking-wide text-slate-800 hover:border-slate-400 transition-colors"
 				>
 					Manage billing
 				</button>

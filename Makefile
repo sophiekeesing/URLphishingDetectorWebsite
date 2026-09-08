@@ -7,8 +7,8 @@ SHELL := /bin/bash
 # and start both the API and the website. Ctrl+C stops both.
 dev: migrate
 	@echo ""
-	@echo "Chick Check API    -> http://localhost:4000"
-	@echo "Chick Check website -> http://localhost:4321"
+	@echo "Chick-Check API    -> http://localhost:4000"
+	@echo "Chick-Check website -> http://localhost:4321"
 	@echo "(Ctrl+C stops both)"
 	@echo ""
 	@trap 'kill 0' EXIT INT TERM; \

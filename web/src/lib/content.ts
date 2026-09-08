@@ -36,13 +36,13 @@ export const features: Feature[] = [
     key: "communityReports",
     icon: "🐣",
     title: "Community reports",
-    description: "See and contribute to a shared blocklist of scam sites reported by other Chick Check users.",
+    description: "See and contribute to a shared blocklist of scam sites reported by other Chick-Check users.",
   },
   {
     key: "weeklyEmailSummary",
     icon: "📬",
     title: "Weekly protection summary",
-    description: "A short weekly email recap of what Chick Check blocked for you.",
+    description: "A short weekly email recap of what Chick-Check blocked for you.",
   },
 ];
 

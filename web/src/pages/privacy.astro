@@ -1,0 +1,100 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const lastUpdated = "This policy is a work in progress ahead of launch and will carry a dated version once finalized.";
+---
+
+<Layout title="Privacy Policy" description="How Chick-Check collects, uses, and protects your data.">
+	<section class="mx-auto max-w-3xl px-6 py-20">
+		<h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Privacy Policy</h1>
+		<p class="mt-2 text-sm text-slate-500">{lastUpdated}</p>
+
+		<p class="mt-6 text-slate-600">
+			Chick-Check is a browser extension and account portal that warns you about phishing and scam links.
+			This policy explains what data we collect, why, and what choices you have. Our starting principle:
+			digital safety shouldn't require handing over more of your data than necessary — so we collect as
+			little as we can, keep checks local wherever possible, and never sell your data or use it for
+			advertising.
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">What we collect</h2>
+		<p class="mt-3 text-slate-600">When you create an account, we store:</p>
+		<ul class="mt-3 list-disc space-y-2 pl-5 text-slate-600">
+			<li>Your email address and a securely hashed version of your password (we never store your password in plain text).</li>
+			<li>Your name, if you choose to provide one.</li>
+			<li>Your feature settings — which protections (link scanning, form protection, typosquat warnings, download scanning, community reports, weekly email summary) you've switched on or off.</li>
+			<li>Basic subscription/billing status (plan, status, and Stripe customer/subscription IDs) if you upgrade. Your actual payment details are handled entirely by Stripe — we never see or store your card information.</li>
+		</ul>
+		<p class="mt-3 text-slate-600">
+			To keep you signed in, we set a single authentication cookie (<code class="rounded bg-slate-100 px-1 py-0.5 text-sm">chick_check_session</code>).
+			It's <code class="rounded bg-slate-100 px-1 py-0.5 text-sm">httpOnly</code>, expires after 30 days, and is used only to
+			recognize your session — not for tracking or advertising. We don't currently use analytics or
+			advertising cookies.
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">How link and page checks work</h2>
+		<p class="mt-3 text-slate-600">
+			Chick-Check is designed to be local-first: as much detection as possible (blocklist matching,
+			heuristics, on-device checks) happens directly in your browser, without sending the page you're
+			visiting anywhere. Where a cloud lookup is needed, we send only a hashed prefix of the URL — not the
+			full address or your browsing history — to reduce what leaves your device.
+		</p>
+		<p class="mt-3 text-slate-600">
+			For some checks, we rely on third-party threat-intelligence providers (for example, VirusTotal). Any
+			such provider is covered by a data processing agreement, and we disclose here if a provider receives
+			any data from a check.
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">Community reports</h2>
+		<p class="mt-3 text-slate-600">
+			If you turn on community reports, sites you flag are anonymized before being added to the shared
+			blocklist that protects other Chick-Check users. We don't attach your identity to a submitted report.
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">Who we share data with</h2>
+		<ul class="mt-3 list-disc space-y-2 pl-5 text-slate-600">
+			<li><strong>Stripe</strong> — processes payments for the optional Pro plan. See Stripe's own privacy policy for how they handle payment data.</li>
+			<li><strong>Threat-intelligence providers</strong> (e.g. VirusTotal) — used for real-time link/file checks, under a data processing agreement.</li>
+		</ul>
+		<p class="mt-3 text-slate-600">We do not sell your data, and we do not share it with advertisers.</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">Your rights</h2>
+		<p class="mt-3 text-slate-600">You can, at any time:</p>
+		<ul class="mt-3 list-disc space-y-2 pl-5 text-slate-600">
+			<li>Review or change your account details and feature settings from your account dashboard.</li>
+			<li>Request a copy of the data we hold about you.</li>
+			<li>Delete your account and associated data.</li>
+		</ul>
+		<p class="mt-3 text-slate-600">
+			If you're in the EU/EEA, this includes the rights to access, rectification, erasure, restriction of
+			processing, data portability, and objection under the GDPR. To exercise any of these, reach us via our
+			<a href="/contact" class="font-semibold text-brand-700 hover:underline">contact page</a>.
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">Data retention</h2>
+		<p class="mt-3 text-slate-600">
+			We keep account data for as long as your account is active. If you delete your account, we delete the
+			associated data, other than what we're legally required to retain (for example, billing records).
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">Children's privacy</h2>
+		<p class="mt-3 text-slate-600">
+			Chick-Check is not directed at children, and we don't knowingly collect data from children without
+			appropriate parental consent.
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">Changes to this policy</h2>
+		<p class="mt-3 text-slate-600">
+			We'll update this page as Chick-Check evolves and post a clear "last updated" date once the policy is
+			finalized ahead of launch. Meaningful changes will be highlighted here.
+		</p>
+
+		<h2 class="mt-10 text-xl font-bold text-slate-900">Contact</h2>
+		<p class="mt-3 text-slate-600">
+			Questions about this policy or your data? Reach us via our
+			<a href="/contact" class="font-semibold text-brand-700 hover:underline">contact page</a>. Our legal
+			entity details are listed in our
+			<a href="/impressum" class="font-semibold text-brand-700 hover:underline">Impressum</a>.
+		</p>
+	</section>
+</Layout>

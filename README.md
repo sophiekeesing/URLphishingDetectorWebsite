@@ -1,6 +1,6 @@
-# Chick Check — website
+# Chick-Check — website
 
-Marketing site and account portal for **Chick Check**, a browser extension that
+Marketing site and account portal for **Chick-Check**, a browser extension that
 warns you about phishing and scam links before you click them. This repo does
 **not** contain the extension itself (that lives in a separate repo) — it's the
 informational landing page, download call-to-action, and the account area

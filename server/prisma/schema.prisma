@@ -18,7 +18,7 @@ model User {
   subscription Subscription?
 }
 
-// One row of toggles per user for the Chick Check browser extension.
+// One row of toggles per user for the Chick-Check browser extension.
 model FeatureSettings {
   id     String @id @default(cuid())
   userId String @unique
